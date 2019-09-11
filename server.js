@@ -15,10 +15,9 @@ app.use(function(req, res, next) {
     next();
 });
 
-
-app.get('/spotify/:client_id/:client_secret', (req, resp) => {
-    let client_id = req.params.client_id;
-    let client_secret = req.params.client_secret;
+app.get('/spotify/:clientId/:clientSecret', (req, resp) => {
+    let clientId = req.params.clientId;
+    let clientSecret = req.params.clientSecret;
     // let token = req.params.token;
     let spotifyUrl = 'https://accounts.spotify.com/api/token';
 
@@ -26,7 +25,7 @@ app.get('/spotify/:client_id/:client_secret', (req, resp) => {
         url: spotifyUrl,
         headers: {
             "Content-Type": "application/x-www-form-urlencoded",
-            Authorization: 'Basic ' + new Buffer(client_id + ':' + client_secret).toString('base64')
+            Authorization: 'Basic ' + new Buffer(`${clientId}:${clientSecret}`).toString('base64')
         },
         form: {
             grant_type: 'client_credentials',
@@ -37,11 +36,7 @@ app.get('/spotify/:client_id/:client_secret', (req, resp) => {
 
     request.post(authOptions, (err, httpResponse, body) => {
         if (err) {
-            return resp.status(400).json({
-                ok: false,
-                mensaje: 'No se pudo obtener el token',
-                err
-            })
+            return resp.status(400).json({ ok: false, mensaje: 'fallo',err})
         }
         resp.json(body);
     });
