@@ -4,7 +4,6 @@ const path = require('path');
 
 const app = express();
 
-
 const publicPath = path.resolve(__dirname, '../public');
 const port = process.env.PORT || 3000;
 
@@ -17,11 +16,10 @@ app.use(function(req, res, next) {
 });
 
 
-app.get('/spotify/:client_id/:client_secret/:token', (req, resp) => {
-
+app.get('/spotify/:client_id/:client_secret', (req, resp) => {
     let client_id = req.params.client_id;
     let client_secret = req.params.client_secret;
-    let token = req.params.token;
+    // let token = req.params.token;
     let spotifyUrl = 'https://accounts.spotify.com/api/token';
 
     var authOptions = {
@@ -31,15 +29,13 @@ app.get('/spotify/:client_id/:client_secret/:token', (req, resp) => {
             Authorization: 'Basic ' + new Buffer(client_id + ':' + client_secret).toString('base64')
         },
         form: {
-            grant_type: 'refresh_token',
-            refresh_token: token
+            grant_type: 'client_credentials',
+            // refresh_token: token
         },
         json: true
     };
 
-
     request.post(authOptions, (err, httpResponse, body) => {
-
         if (err) {
             return resp.status(400).json({
                 ok: false,
@@ -47,13 +43,9 @@ app.get('/spotify/:client_id/:client_secret/:token', (req, resp) => {
                 err
             })
         }
-
         resp.json(body);
-
     });
-
 });
-
 
 app.listen(port, (err) => {
     if (err) throw new Error(err);
