@@ -17,10 +17,11 @@ app.use(function(req, res, next) {
 });
 
 
-app.get('/spotify/:client_id/:client_secret', (req, resp) => {
+app.get('/spotify/:client_id/:client_secret/:token', (req, resp) => {
 
     let client_id = req.params.client_id;
     let client_secret = req.params.client_secret;
+    let token = req.params.token;
     let spotifyUrl = 'https://accounts.spotify.com/api/token';
 
     var authOptions = {
@@ -30,7 +31,8 @@ app.get('/spotify/:client_id/:client_secret', (req, resp) => {
             Authorization: 'Basic ' + new Buffer(client_id + ':' + client_secret).toString('base64')
         },
         form: {
-            grant_type: 'refresh_token'
+            grant_type: 'refresh_token',
+            refresh_token: token
         },
         json: true
     };
