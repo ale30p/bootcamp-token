@@ -30,7 +30,7 @@ app.get('/spotify/:client_id/:client_secret', (req, resp) => {
             Authorization: 'Basic ' + new Buffer(client_id + ':' + client_secret).toString('base64')
         },
         form: {
-            grant_type: 'client_credentials'
+            grant_type: 'refresh_token'
         },
         json: true
     };
