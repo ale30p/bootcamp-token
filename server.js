@@ -13,7 +13,6 @@ app.use(express.static(publicPath));
 app.use(function(req, res, next) {
     res.header("Access-Control-Allow-Origin", "*");
     res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
-    res.header("Content-Type", "application/x-www-form-urlencoded");
     next();
 });
 
@@ -27,6 +26,7 @@ app.get('/spotify/:client_id/:client_secret', (req, resp) => {
     var authOptions = {
         url: spotifyUrl,
         headers: {
+            "Content-Type": "application/x-www-form-urlencoded",
             Authorization: 'Basic ' + new Buffer(client_id + ':' + client_secret).toString('base64')
         },
         form: {
